@@ -1,0 +1,102 @@
+<!-- <router-outlet></router-outlet>
+
+<mfac-loader></mfac-loader>
+<mfac-toaster></mfac-toaster> -->
+<div class="whole-container">
+
+    <div class="container">
+        <div class="search-field">
+            <label>search</label>
+            <input type="text" placeholder="enter search text" (blur)="onBlur($event)">
+        </div>
+        <div class="overall-container">
+            <div class="left-container">
+                <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label for="empno">Employee Number:</label>
+                        <input type="text" id="empno" formControlName="empNo" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="empname">Employee Name:</label>
+                        <input type="text" id="empname" formControlName="empName" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="empSalary">Employee Salary:</label>
+                        <input type="number" id="empSalary" formControlName="empSalary" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <select id="gender" formControlName="gender" class="form-control">
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="maritalStatus">Marital Status:</label>
+                        <div  class="form-control">
+                            <label>
+                                <input type="radio" value="single" formControlName="maritalStatus"> Single
+                            </label>
+                            <label>
+                                <input type="radio" value="married" formControlName="maritalStatus"> Married
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Employeed:</label>
+                        <label class="switch">
+                            <input type="checkbox" formControlName="employeed">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Branch:</label>
+                        <div>
+                            <label>
+                                <input type="checkbox"   [checked]="employeeForm.value.branch?.includes('cs')"
+ (change)="onBranchChange($event)" value="cs"> CS
+                            </label>
+                            <label>
+                                <input type="checkbox"   [checked]="employeeForm.value.branch?.includes('bio')"
+                                (change)="onBranchChange($event)" value="bio"> BIO
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" [disabled]="employeeForm.invalid">submit</button>
+                </form>
+            </div>
+            <div class="right-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee Number</th>
+                            <th>Employee Name</th>
+                            <th>Employee Salary</th>
+                            <th>Gender</th>
+                            <th>Marital Status</th>
+                            <th>Employeed</th>
+                            <th>branch</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of employeeSearchData">
+                            <td>{{ item.empNo }}</td>
+                            <td>{{ item.empName }}</td>
+                            <td>{{ item.empSalary }}</td>
+                            <td>{{ item.gender }}</td>
+                            <td>{{ item.maritalStatus }}</td>
+                            <td>{{ item.employeed }}</td>
+                            <td>{{ getBranches(item.branch) }}</td>
+                            <td>
+                                <button (click)="editEmployee(item.empNo)">Edit</button>
+                                <button (click)="deleteEmployee(item.empNo)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
