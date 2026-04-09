@@ -2,11 +2,12 @@
 
 <mfac-loader></mfac-loader>
 <mfac-toaster></mfac-toaster> -->
+
 <div class="whole-container">
 
     <div class="container">
         <div class="search-field">
-            <label>search</label>
+            <label>Search</label>
             <input type="text" placeholder="enter search text" (blur)="onBlur($event)">
         </div>
         <div class="overall-container">
@@ -34,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <label for="maritalStatus">Marital Status:</label>
-                        <div  class="form-control">
+                        <div class="form-control">
                             <label>
                                 <input type="radio" value="single" formControlName="maritalStatus"> Single
                             </label>
@@ -54,12 +55,12 @@
                         <label>Branch:</label>
                         <div>
                             <label>
-                                <input type="checkbox"   [checked]="employeeForm.value.branch?.includes('cs')"
- (change)="onBranchChange($event)" value="cs"> CS
+                                <input type="checkbox" [checked]="employeeForm.value.branch?.includes('cs')"
+                                    (change)="onBranchChange($event)" value="cs"> CS
                             </label>
                             <label>
-                                <input type="checkbox"   [checked]="employeeForm.value.branch?.includes('bio')"
-                                (change)="onBranchChange($event)" value="bio"> BIO
+                                <input type="checkbox" [checked]="employeeForm.value.branch?.includes('bio')"
+                                    (change)="onBranchChange($event)" value="bio"> BIO
                             </label>
                         </div>
                     </div>
@@ -90,8 +91,8 @@
                             <td>{{ item.employeed }}</td>
                             <td>{{ getBranches(item.branch) }}</td>
                             <td>
-                                <button (click)="editEmployee(item.empNo)">Edit</button>
-                                <button (click)="deleteEmployee(item.empNo)">Delete</button>
+                                <button (click)="handleAction('edit',item.empNo)">Edit</button>
+                                <button (click)="handleAction('delete',item.empNo)">Delete</button>
                             </td>
                         </tr>
                     </tbody>
@@ -99,4 +100,19 @@
             </div>
         </div>
     </div>
+    <ng-template #dialogBox let-modal>
+        <div class="custom-modal">
+            <div class="custom-modal-header">
+                <h3>Confirmation</h3>
+                <span class="close-btn" (click)="modal.dismiss()">×</span>
+            </div>
+            <div class="custom-modal-body">
+                <p>Are you sure you want to perform the {{ action }} action ?</p>
+            </div>
+            <div class="custom-modal-footer">
+                <button class="btn btn-yes" (click)="modal.close(true)">Yes</button>
+                <button class="btn btn-no" (click)="modal.close(false)">No</button>
+            </div>
+        </div>
+    </ng-template>
 </div>

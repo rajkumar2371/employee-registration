@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, take } from 'rxjs';
 import { AuthenticationService } from './modules/authentication/authentication.service';
@@ -6,6 +6,7 @@ import { InsurerConfigService } from './shared/services/common/insurer-field.ser
 import { SessionService } from './shared/services/common';
 import { is_valid_value } from './core/utils/utils';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'mfac-root',
@@ -17,12 +18,15 @@ export class AppComponent implements OnInit {
   employeeForm !: FormGroup;
   employeeData = [];
   employeeSearchData = [];
+  @ViewChild('dialogBox') dialogBox!: TemplateRef<unknown>;
+  public action:string = '';
   constructor(
     private router: Router,
     private authService: AuthenticationService,
     private InsurerStateService: InsurerConfigService,
     private sessionService: SessionService,
     private fb: FormBuilder,
+    private modal:NgbModal
   ) { }
   // ngOnInit() {
   //   this.router.events
@@ -102,7 +106,7 @@ export class AppComponent implements OnInit {
     sessionStorage.setItem('employeeData', JSON.stringify(this.employeeData));
   }
   editEmployee(index: number) {
-    const recordsToBeEdited = this.employeeData.find(item => item.empNo === index);
+    const recordsToBeEdited = this.employeeSearchData.find(item => item.empNo === index);
     this.employeeForm.patchValue({
       empNo: recordsToBeEdited.empNo,
       empName: recordsToBeEdited.empName,
@@ -162,5 +166,22 @@ export class AppComponent implements OnInit {
     return (formArray: any) => {
       return formArray.length >= min ? null : { required: true };
     };
+  }
+  handleAction(action,index){
+    this.action = action;
+    const modRef= this.modal.open(this.dialogBox,
+      {
+        centered:true,
+        backdrop:'static'
+      }
+    );
+    console.log('`this.${action}Employee(index)`')
+    console.log('modRef:', modRef)
+    modRef.result
+    .then(res=>{
+      if(res===true) this[`${action}Employee`](index)
+    })
+    .catch(err=> console.log(err))
+    .finally(()=>console.log('completed'))
   }
 }
